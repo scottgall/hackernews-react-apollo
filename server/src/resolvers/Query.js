@@ -21,9 +21,21 @@ async function feed(parent, args, context) {
     first: args.first,
     orderBy: args.orderBy,
   })
+  const users = await context.prisma.users({
+    where: {
+      OR: [
+        { description_contains: args.filter },
+        { url_contains: args.filter },
+      ],
+    },
+    skip: args.skip,
+    first: args.first,
+    orderBy: args.orderBy,
+  })
   return {
     count,
     links,
+    users,
   }
 }
 
